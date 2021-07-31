@@ -85,9 +85,14 @@ def EchoHeader():
 @click.option('--port',
               default=8120,
               help='Monitoring port')
+@click.argument('eth_address', nargs=-1)
 @click.command()
-def main(fps, timeout, addresses, port):
-    click.echo('Loading known public ETH addresses', nl=False)
+def main(fps, timeout, addresses, port, eth_address):
+    if eth_address:
+        click.echo('Attacking specific ETH addresses: ', nl=False)
+        addresses = [address.lower() for address in eth_address]
+    else:
+        click.echo('Loading known public ETH addresses: ', nl=False)
     target_addresses = trie.EthereumAddressTrie(targets.targets(addresses))
     click.echo('%d found.\n' % (len(target_addresses)))
 
