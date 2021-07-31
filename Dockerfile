@@ -1,12 +1,13 @@
-FROM python:latest
+FROM --platform=linux/386 python:3
 
 WORKDIR /usr/src/app
 
-RUN apt-get update
-RUN apt-get install -y build-essential
-RUN apt-get install -y libpython3-dev python3-dev
-RUN apt-get install -y python3-yaml
-RUN apt-get install -y libyaml-dev
+RUN apt-get update && \
+	apt-get install -y \
+		build-essential \
+		libpython3-dev python3-dev \
+		python3-yaml \
+		libyaml-dev
 
 RUN pip3 install --upgrade pip
 COPY requirements.txt ./
