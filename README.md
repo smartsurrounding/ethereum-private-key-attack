@@ -5,12 +5,12 @@ resulting ETH addresses with a list of known values.  Strength of each
 guess is measured by the number of leading hexadecimal digits that match
 (other digits may match, but we don't count those).
 
-While guessing, the script shows its guesses WarGames-style.
+While running, the script shows its guesses WarGames-style.
 
 ## Usage
 
 ```
-Usage: brute_force_app.py [OPTIONS]
+Usage: brute_force_app.py [OPTIONS] [ETH_ADDRESS]...
 
 Options:
   --port INTEGER        Monitoring port

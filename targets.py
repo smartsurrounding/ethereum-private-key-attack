@@ -3,10 +3,12 @@
 import yaml
 
 
-def targets(stream=None):
+def targets(list_or_stream=None):
     """Load targets from a yaml stream (or return default)."""
-    if stream:
-        return yaml.safe_load(stream)
+    if isinstance(list_or_stream, list):
+        return [entry.lower() for entry in list_or_stream]
+    elif list_or_stream:
+        return yaml.safe_load(list_or_stream)
     else:
         # return a hardcoded copy of top-100 addresses
         return [
