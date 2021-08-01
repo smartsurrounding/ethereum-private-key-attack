@@ -85,9 +85,13 @@ def EchoHeader():
 @click.option('--port',
               default=8120,
               help='Monitoring port')
+@click.option('--quiet',
+              default=False,
+              is_flag=True,
+              help='Skip the animation')
 @click.argument('eth_address', nargs=-1)
 @click.command()
-def main(fps, timeout, addresses, port, eth_address):
+def main(fps, timeout, addresses, port, quiet, eth_address):
     if eth_address:
         click.echo('Attacking specific ETH addresses: ', nl=False)
         addresses = [address.lower() for address in eth_address]
@@ -127,7 +131,8 @@ def main(fps, timeout, addresses, port, eth_address):
     varz.start_time = time.asctime(time.localtime())
     start_time = time.perf_counter()
 
-    EchoHeader()
+    if not quiet:
+        EchoHeader()
     try:
         while varz.best_score[0] < ETH_ADDRESS_LENGTH:
             now = time.perf_counter()
@@ -147,22 +152,24 @@ def main(fps, timeout, addresses, port, eth_address):
             strength, _ = current
 
             if last_frame + fps < now:
-                EchoLine(now - start_time,
-                         varz.num_tries,
-                         priv.hexlify_private(),
-                         current[0],
-                         current[1])
+                if not quiet:
+                    EchoLine(now - start_time,
+                             varz.num_tries,
+                             priv.hexlify_private(),
+                             current[0],
+                             current[1])
                 last_frame = now
 
             # the current guess was as close or closer to a valid ETH address
             # show it and update our best guess counter
             if current >= varz.best_score:
-                EchoLine(now - start_time,
-                         varz.num_tries,
-                         priv.hexlify_private(),
-                         current[0],
-                         current[1],
-                         newline=True)
+                if not quiet:
+                    EchoLine(now - start_time,
+                             varz.num_tries,
+                             priv.hexlify_private(),
+                             current[0],
+                             current[1],
+                             newline=True)
                 varz.best_score = current
                 varz.best_guess = {
                         'private-key': priv.hexlify_private(),

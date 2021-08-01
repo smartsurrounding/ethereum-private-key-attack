@@ -98,6 +98,40 @@ $ python3 ./brute_force_app.py
 ...
 ```
 
+### Running in a container
+
+You can also run this toy in a docker container.
+
+1. First, pull the docker container:
+```bash
+$ docker pull evilegg/ethereum-private-key-attack
+```
+
+2. If you want to run it as is:
+```bash
+$ docker run evilegg/ethereum-private-key-attack
+```
+
+3. Or you can copy a yaml file containing the ETH addresses you wish to attack:
+```bash
+$ docker run -it -v "$(PWD):/usr/src/app" evilegg/ethereum-private-key-attack python3 brute_force_app.py --addresses YOUR_YAML_FILE
+```
+
+4. Or you can pass the YAML data via stdin:
+```bash
+$ cat YOUR_YAML_FILE | docker run -i evilegg/ethereum-private-key-attack ./brute_force_app.py --addresses /dev/stdin
+```
+
+5. You can also forward the monitoring port to `localhost:80` for remote monitoring:
+```bash
+$ cat YOUR_YAML_FILE | docker run -i -p 80:8120 evilegg/ethereum-private-key-attack ./brute_force_app.py --addresses /dev/stdin
+```
+
+6. You can also skip the animations:
+```bash
+$ docker run evilegg/ethereum-private-key-attack ./brute_force_app.py --quiet
+```
+
 ## Troubleshooting
 
 1. libyaml is not found
